@@ -18,11 +18,17 @@ fn main() {
 
     left.sort();
     right.sort();
-    let zipped: u64 = left.iter()
+    let distance: u64 = left.iter()
         .zip(right.iter())
         .map(|(l, r)| if l > r { l - r } else { r - l })
         .sum();
 
+    println!("Distance {}", distance);
 
-    println!("Hello, world! {}", zipped);
+    let similarity: usize = left.iter()
+        .map(|l| (*l as usize) * right.iter().filter(|r| *r == l).count())
+        .sum();
+
+    println!("Similarity {}", similarity);
+
 }
