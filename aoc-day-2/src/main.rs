@@ -28,15 +28,22 @@ fn main() {
 
 
     let dampened = reports.iter()
-        .map(|s| (0..s.len()).map(|i| { let mut f = s.clone(); f.remove(i); f }))
+        .map(|s| (0..s.len()).map(|i| s.iter()
+            .enumerate()
+            .filter(|(vi, _)| *vi == i)
+            .map(|(_, v)| *v)
+            .collect::<Vec<i32>>()))
         .map(|u| u.map(|s| s.iter().take(s.len() - 1)
             .enumerate()
             .map(|(i, v)| s[i + 1] - *v)
             .collect::<Vec<i32>>()).collect::<Vec<Vec<i32>>>())
         .filter(|u| u.iter().any(|s| s.iter()
-            .all(|v| (v.abs() > 0 && v.abs() < 4) && s.iter().all(|c| c.is_negative() == v.is_negative()))))
+            .all(|v| (v.abs() > 0 && v.abs() < 4) && 
+                s.iter().all(|c| c.is_negative() == v.is_negative()))))
         .count();
 
     println!("Dapened {}", dampened);
 
 }
+
+
